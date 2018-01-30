@@ -1,0 +1,5 @@
+#!/bin/bash
+user=$USER
+ma_date=$(date '+%A %d %B %Y')
+nbr_co=$(who | wc -l)
+echo "L'utilisateur actif est $user. Nous sommes le $ma_date, et $nbr_co utilisateurs sont connectés actuellement."
