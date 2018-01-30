@@ -1,0 +1,8 @@
+#!/bin/bash
+if (( $# == 2 ));then
+	somme=$(($1+$2))
+	echo "$1 + $2 = $somme"
+else
+	echo "ERROR"
+	echo "Veuillez saisir le nombre d'arguments nécéssaires (2)"
+fi

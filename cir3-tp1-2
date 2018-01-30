@@ -2,4 +2,17 @@
 user=$USER
 ma_date=$(date '+%A %d %B %Y')
 nbr_co=$(who | wc -l)
-echo "L'utilisateur actif est $user. Nous sommes le $ma_date, et $nbr_co utilisateurs sont connectés actuellement."
+espace_disk=$(df -kh .| awk 'NR==2 {print $4}')
+echo "L'utilisateur actif est $user. Nous sommes le $ma_date, et $nbr_co utilisateurs sont actuellement connectés."
+
+pourcentage=$(df -h | awk 'NR==4{print $5}')
+pourcent=${pourcentage/\%/}
+if [ $pourcent -lt 90 ] && [ $pourcent -gt 75 ];then
+	echo "orange"
+fi
+if (( $pourcent >= 90 ));then
+	echo "rouge"
+fi
+if (( $pourcent <= 75 ));then
+	echo -e "\e[32m$pourcentage\e[0m"
+fi
