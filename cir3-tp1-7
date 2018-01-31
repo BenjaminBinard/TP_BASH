@@ -1,0 +1,11 @@
+#!/bin/bash
+if [[ $# == 1 ]];then
+	fichier=$(ls -l | grep "cir3-tp1-1" | awk '{print $1}')
+	echo $fichier
+	directory=0
+	for i in $(seq 1 ${#fichier}); do
+		echo $(echo $fichier | cut -c$i)
+	done
+else
+	echo "Ce fichier n'existe pas"
+fi

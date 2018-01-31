@@ -1,7 +1,12 @@
 #!/bin/bash
 if (( $# == 2 ));then
-	somme=$(($1+$2))
-	echo "$1 + $2 = $somme"
+	if [ $(echo $1 | grep "[0-9]") ] && [ $(echo $2 | grep "[0-9]") ]; then
+		  somme=$(($1+$2))
+		  echo "$1 + $2 = $somme"
+	else
+		echo "ERROR"
+		echo "Seul les caractère entre 0 - 9 sont autorisés."
+	fi
 else
 	echo "ERROR"
 	echo "Veuillez saisir le nombre d'arguments nécéssaires (2)"

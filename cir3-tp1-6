@@ -1,0 +1,18 @@
+#!/bin/bash
+if (( $# == 3 )); then
+	if [[ $1 == +([1-9]) ]] && [ $(echo $3 | grep "[0-9]") ] && [ $(echo $2 | grep "[0-9]") ];then
+		plus_grd=$1
+		if [ $plus_grd -lt $2 ];then
+			plus_grd=$2
+		fi
+		if [ $plus_grd -lt $3 ];then
+			plus_grd=$3
+		fi
+		echo "Le plus grand nombre est : $plus_grd"
+		echo "parmi $1 $2 $3"
+	else
+		echo "Veuillez saisir des nombres."
+	fi
+else
+	echo "Veuillez saisir 3 nombres."
+fi
