@@ -1,0 +1,59 @@
+#!/bin/bash
+
+print_menu(){
+	echo -e "\t+------------------------------------------------------------------------+"
+	echo -e "\t|                      Gestion Des Utilisateurs                          |"
+	echo -e "\t+----------------------------------------------------------------------- +"
+	echo -e "\t| Saisir les informations personnelles d’un salarié, taper 1.            |"
+	echo -e "\t| Mettre à jour les informations personnelles d’un salarié, taper 2.     |"
+	echo -e "\t| Consulter les informations personnelles d’un salarié, taper 3.         |"
+	echo -e "\t| Consulter les informations personnelles de tous les salariés, taper 4. |"
+	echo -e "\t| Supprimer un salarié, taper 5.                                         |"
+	echo -e "\t| Quitter, taper 60                                                      |"
+	echo -e "\t+------------------------------------------------------------------------+\n"
+	echo -e -n "\tChoix >"
+}
+
+saisir_prenom(){
+	echo -n "Prenom > "
+	read prenom
+	while (( $(echo $prenom | wc -m) < 3 ))
+	do
+		echo -n "Prenom > "
+		read prenom
+	done
+}
+
+saisir_nom(){
+	echo -n "Nom > "
+	read nom
+	while (( $(echo $nom | wc -m) < 3 ))
+	do
+		echo -n "Nom > "
+		read nom
+	done
+}
+
+saisir_date(){
+	echo -n "Date de Naissance (JJ/MM/YYYY) > "
+	read date
+	echo $(echo $date | egrep "[0-31]/[0-12]/[1900-2018]")
+}
+
+print_menu
+read choix
+case $choix in
+	1)
+		saisir_prenom 
+		saisir_nom
+		saisir_date
+		;;
+	2)
+		echo "choix 2"
+		;;
+	*)
+		echo "Erreur"
+		print_menu
+		read choix
+		;;
+esac
