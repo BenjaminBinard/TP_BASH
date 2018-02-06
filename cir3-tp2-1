@@ -1,4 +1,5 @@
 #!/bin/bash 
+fichier="employes.csv"
 
 print_menu(){
 	echo -e "\t+------------------------------------------------------------------------+"
@@ -44,17 +45,115 @@ saisir_date(){
 	done
 }
 
+saisir_situation_familiale(){
+	echo -e "+----------------------+"
+	echo -e "| Situation Familiale  |"
+	echo -e "+----------------------+"
+	echo -e "| 1 - Marié(e)         |"
+	echo -e "| 2 - Pacsé(e)         |"
+	echo -e "| 3 - Célibataire      |"
+	echo -e "| 4 - Divorcé(e)       |"
+	echo -e "| 5 - Veuf(ve)         |"
+	echo -e "+----------------------+"
+	echo -e -n "Situation Familiale > "
+	read choix
+	case $choix in
+		1)
+			situation="Marié(e)";;
+		2)
+			situation="Pacsé(e)";;
+		3)
+			situation="Célibataire";;
+		4)
+			situation="Divorcé(e)";;
+		5)
+			situation="Veuf(ve)";;
+		*)
+			echo "Erreur, essayer à nouveau."
+			situation="NULL";;
+	esac
+}
+
+recuperation_donnees(){
+	saisir_prenom
+	saisir_nom
+	ligne=$(grep -i "$prenom;$nom" $fichier)
+	echo $ligne
+	OLD_IFS=$IFS
+	IFS=";"
+	set $ligne
+	IFS=$OLD_IFS
+	prenom=$1
+	nom=$2
+	date=$3
+	situation=$4
+	echo "$prenom $nom $date $situation"
+}
+
+enregistrement(){
+	echo "$prenom;$nom;$date;$situation" >> $fichier
+	echo "Enregistrement éfféctué."
+}
+
+modification(){
+	echo -e "+----------------------------+"
+	echo -e "| Que Modifier ?             |"
+	echo -e "+----------------------------+"
+	echo -e "| 1 - Prenom                 |"
+	echo -e "| 2 - Nom                    |"
+	echo -e "| 3 - Date de Naissance      |"
+	echo -e "| 4 - Situation Familiale    |"
+	echo -e "+----------------------------+"
+	echo -e -n "Que modifier ? "
+	read choix
+	echo $prenom $nom
+	fichier_temp=$(grep -i -v "$prenom;$nom" $fichier)
+	echo $fichier_temp
+	case $choix in
+		1)
+			saisir_prenom;;
+		2)
+			saisir_nom;;
+		3)
+			saisir_date;;
+		4)
+			saisir_situation_familiale;;
+		*)
+			echo "Erreur de saisie.";;
+	esac
+	echo $fichier_temp > $fichier
+	echo "$prenom;$nom;$date;$situation" >> $fichier
+  echo "Enregistrement éfféctué."
+}
+
+affichage_unique(){
+  echo -e "+--------------------------------+"
+  echo -e "| $prenom $nom               |"
+  echo -e "+--------------------------------+"
+  echo -e "| Date de Naissance : $date |"
+  echo -e "| Etat Civil : $situation |"
+  echo -e "+--------------------------------+"
+
+}
+
 print_menu
 read choix
 case $choix in
 	1)
-		#saisir_prenom 
-		#saisir_nom
+		saisir_prenom 
+		saisir_nom
 		saisir_date
-		echo $date
+		saisir_situation_familiale
+		enregistrement
 		;;
 	2)
-		echo "choix 2"
+		echo "On recupère ..."
+		recuperation_donnees
+		modification
+		;;
+	3)
+		recuperation_donnees
+		affichage_unique
 		;;
 	*)
 		echo "Erreur"
