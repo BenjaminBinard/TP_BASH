@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 print_menu(){
 	echo -e "\t+------------------------------------------------------------------------+"
@@ -17,7 +17,7 @@ print_menu(){
 saisir_prenom(){
 	echo -n "Prenom > "
 	read prenom
-	while (( $(echo $prenom | wc -m) < 3 ))
+	while ! [[ $prenom =~ ^[a-zA-Z]{2,}$  ]]
 	do
 		echo -n "Prenom > "
 		read prenom
@@ -27,7 +27,7 @@ saisir_prenom(){
 saisir_nom(){
 	echo -n "Nom > "
 	read nom
-	while (( $(echo $nom | wc -m) < 3 ))
+	while ! [[ $nom =~ ^[a-zA-Z]{2,}$  ]]
 	do
 		echo -n "Nom > "
 		read nom
@@ -37,16 +37,21 @@ saisir_nom(){
 saisir_date(){
 	echo -n "Date de Naissance (JJ/MM/YYYY) > "
 	read date
-	echo $(echo $date | egrep "[0-31]/[0-12]/[1900-2018]")
+	while ! [[ $date =~ ^(((0[1-9]|[12][0-9]|30)[-/]?(0[13-9]|1[012])|31[-/]?(0[13578]|1[02])|(0[1-9]|1[0-9]|2[0-8])[-/]?02)[-/]?[0-9]{4}|29[-/]?02[-/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$ ]]
+	do
+		echo -n "Date de Naissance (JJ/MM/YYYY) > "
+  	read date
+	done
 }
 
 print_menu
 read choix
 case $choix in
 	1)
-		saisir_prenom 
-		saisir_nom
+		#saisir_prenom 
+		#saisir_nom
 		saisir_date
+		echo $date
 		;;
 	2)
 		echo "choix 2"
