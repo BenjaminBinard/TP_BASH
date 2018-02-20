@@ -1,45 +1,62 @@
 #!/bin/bash
 
 usage(){
-	echo "Voici l'aide"
-	echo "-h  						Pour afficher l'aide"
-	echo "-e <fichier>  	Pour verifier existence utilisateur"
-	echo "-u  						existe dans /etc/password"
-	echo "-g  						existe dans /etc/group"
+  echo "Voici l'aide"
+  echo "-h              Pour afficher l'aide"
+  echo "-e <fichier>    Pour verifier existence utilisateur"
+  echo "-u              existe dans /etc/password"
+  echo "-g              existe dans /etc/group"
 }
 
 existe(){
-	echo "Veuillez saisir le nom d'utilisateur > "
-	read user
-	resultat=$(grep "$user" $fichier | wc -l)
-	if [[ $resultat -gt 0 ]]
-	then
-		echo "L'utilisateur existe bel et bien dans $fichier"
-		exit 0
-	else
-		echo "L'utilisateur $user n'existe pas dans $fichier"
-		exit 1
-	fi
+  resultat=$(grep "$user" $fichier | wc -l)
+  if [[ $resultat -gt 0 ]]
+  then
+    echo "L'utilisateur existe bel et bien dans $fichier"
+    exit 0
+  else
+    echo "L'utilisateur $user n'existe pas dans $fichier"
+    choix=0
+    while [[ $choix -eq 0 ]]
+    do
+      echo "Voulez vous enregistrer cet utilisateur ? [y/n]"
+      read choix
+      case $choix in
+        y)
+          create_user
+					exit 0;;
+        Y)
+          create user
+					exit 0;;
+        n)
+          exit 0;;
+        N)
+          exit 0;;
+      esac
+    done
+  fi
+}
+create_user(){
+  echo "Creation User ..."
 }
 
-while getopts "ughe:" option
+while getopts "u:g:h" option
 do
-	case $option in
-		h)
-			usage
-			;;
-		e)
-			fichier=$OPTARG
-			existe
-			;;
-		u)
-			fichier="/etc/passwd"
-			existe
-			;;
-		g)
-			fichier="/etc/group"
-			existe
-			;;
-	esac
+  case $option in
+    h)
+      usage
+      ;;
+    u)
+      fichier="/etc/passwd"
+      user=$OPTARG
+      existe
+      ;;
+    g)
+      fichier="/etc/group"
+      user=$OPTARGi
+      existe
+      ;;
+  esac
 done
 exit 0
+
