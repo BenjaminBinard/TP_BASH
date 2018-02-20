@@ -1,0 +1,45 @@
+#!/bin/bash
+
+usage(){
+	echo "Voici l'aide"
+	echo "-h  						Pour afficher l'aide"
+	echo "-e <fichier>  	Pour verifier existence utilisateur"
+	echo "-u  						existe dans /etc/password"
+	echo "-g  						existe dans /etc/group"
+}
+
+existe(){
+	echo "Veuillez saisir le nom d'utilisateur > "
+	read user
+	resultat=$(grep "$user" $fichier | wc -l)
+	if [[ $resultat -gt 0 ]]
+	then
+		echo "L'utilisateur existe bel et bien dans $fichier"
+		exit 0
+	else
+		echo "L'utilisateur $user n'existe pas dans $fichier"
+		exit 1
+	fi
+}
+
+while getopts "ughe:" option
+do
+	case $option in
+		h)
+			usage
+			;;
+		e)
+			fichier=$OPTARG
+			existe
+			;;
+		u)
+			fichier="/etc/passwd"
+			existe
+			;;
+		g)
+			fichier="/etc/group"
+			existe
+			;;
+	esac
+done
+exit 0
