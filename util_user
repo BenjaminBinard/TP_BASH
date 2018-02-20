@@ -1,0 +1,46 @@
+#!/bin/bash
+
+create_user(){
+	echo "Creation de l'utilisateur ..."
+	useradd -e 2018-02-22 -M -p $(openssl passwd -1 0000) $user
+}
+change_user(){
+	echo "Change utilisateur ..."
+}
+print_user(){
+	echo "Impression de l'utilisateur ..."
+}
+delete_user(){
+	echo "Supression de l'utilisateur ..."
+	userdel $user
+}
+create_users(){
+	echo "Creations de plusieurs utilisateurs ..."
+  resultat=$(grep -i "$user" $fichier | wc -l)
+  if [[ $resultat -gt 0 ]]
+  then
+  	echo "L'utilisateur existe bel et bien dans $fichier"
+    exit 0
+   else
+   	echo "L'utilisateur $user n'existe pas dans $fichier"
+    choix=0
+    while [[ $choix -eq 0 ]]
+    do
+    	echo "Voulez vous enregistrer cet utilisateur ? [y/n]"
+      read choix
+      case $choix in
+      	y)
+        	create_user
+          exit 0;;
+        Y)
+          create_user
+          exit 0;;
+        n)
+          exit 0;;
+        N)
+         exit 0;;
+      esac
+    done
+   fi
+
+}

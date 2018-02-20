@@ -1,46 +1,98 @@
 #!/bin/bash
 
+source util_user
+
 usage(){
   echo "Voici l'aide"
-  echo "-h              Pour afficher l'aide"
-  echo "-e <fichier>    Pour verifier existence utilisateur"
-  echo "-u              existe dans /etc/password"
-  echo "-g              existe dans /etc/group"
+  echo "-h _________ Pour afficher l'aide"
+  echo "-u _________ Existe dans /etc/password"
+  echo "-g _________ Existe dans /etc/group"
+	echo "-d _________ Supression Utilisateur ou Groupe"
 }
 
 existe(){
-  resultat=$(grep "$user" $fichier | wc -l)
-  if [[ $resultat -gt 0 ]]
-  then
-    echo "L'utilisateur existe bel et bien dans $fichier"
-    exit 0
-  else
-    echo "L'utilisateur $user n'existe pas dans $fichier"
-    choix=0
-    while [[ $choix -eq 0 ]]
-    do
-      echo "Voulez vous enregistrer cet utilisateur ? [y/n]"
-      read choix
-      case $choix in
-        y)
-          create_user
-					exit 0;;
-        Y)
-          create user
-					exit 0;;
-        n)
-          exit 0;;
-        N)
-          exit 0;;
-      esac
-    done
-  fi
-}
-create_user(){
-  echo "Creation User ..."
+  case $mode in
+	  user)
+	    resultat=$(grep -i "$user" $fichier | wc -l)
+      if [[ $resultat -gt 0 ]]
+      then
+        echo "L'utilisateur existe bel et bien dans $fichier"
+        exit 0
+      else
+        echo "L'utilisateur $user n'existe pas dans $fichier"
+        choix=0
+        while [[ $choix -eq 0 ]]
+        do
+          echo "Voulez vous enregistrer cet utilisateur ? [y/n]"
+          read choix
+          case $choix in
+            y)
+              create_user
+    					exit 0;;
+            Y)
+              create_user
+    					exit 0;;
+            n)
+              exit 0;;
+            N)
+              exit 0;;
+          esac
+        done
+      fi
+	    ;;
+	  group)
+      resultat=$(grep -i "$group" $fichier | wc -l)
+      if [[ $resultat -gt 0 ]]
+      then
+        echo "Le groupe $group existe bel et bien dans $fichier"
+        exit 0
+      else
+        echo "Le groupe $group n'existe pas dans $fichier"
+        choix=0
+        while [[ $choix -eq 0 ]]
+        do
+          echo "Voulez vous enregistrer cet utilisateur ? [y/n]"
+          read choix
+          case $choix in
+            y)
+              create_group
+              exit 0;;
+            Y)
+              create_group
+              exit 0;;
+            n)
+              exit 0;;
+            N)
+              exit 0;;
+          esac
+        done
+      fi
+	    ;;
+	esac
 }
 
-while getopts "u:g:h" option
+choix_delete(){
+	echo "Voulez vous supprimer un utilisateurs ou un groupe ?"
+	echo "User______________Touche 'U'"
+	echo "Groupe____________Touche 'G'"
+	read choix
+	case $choix in
+		u)
+			delete_user;;
+		U)
+			delete_user;;
+		G)
+			delete_group;;
+		g)
+			delete_group;;
+	esac
+}
+
+echo "+--------------------------------------------+"
+echo "|        Gestion D'Utilisateurs              |"
+echo "+--------------------------------------------+"
+
+while getopts "d:u:g:h" option
 do
   case $option in
     h)
@@ -49,14 +101,19 @@ do
     u)
       fichier="/etc/passwd"
       user=$OPTARG
+      mode="user"
       existe
       ;;
     g)
       fichier="/etc/group"
-      user=$OPTARGi
+      group=$OPTARG
+      mode="group"
       existe
       ;;
-  esac
+		d)
+			user=$OPTARG
+			choix_delete
+			;;
+	esac
 done
 exit 0
-
