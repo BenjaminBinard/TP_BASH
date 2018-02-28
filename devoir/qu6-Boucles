@@ -1,0 +1,54 @@
+#!/bin/bash
+
+#Initialisation du programme
+echo "+------------------------------+"
+echo "|     Question 6 - Boucles     |"
+echo "+------------------------------+"
+
+adresse_mail="toto@cours-shell.bzh"
+
+#Affichage du menu de saisie et lecture du choix
+#Pas de verification car toute mauvaise saisie entraine la poursuite du programme sans rien faire
+saisie_choix(){
+  echo "Que voulez vous faire avec $fichier ? "
+  echo "1) L'imprimer"
+  echo "2) L'envoyer par mail"
+  echo "*) L'ignorer"
+  read choix
+}
+
+#Impression du fichier texte
+imprimer(){
+  echo "-----------------------------------------------"
+  echo "Impression du fichier $fichier ..."
+  cat $fichier
+  echo "-----------------------------------------------"
+}
+
+#On ignore, dans tous les autres cas
+rien(){
+  echo "-----------------------------------------------"
+  echo "Le fichier est ignoré ..."
+  echo "-----------------------------------------------"
+}
+
+#On envoie par mail
+envoyer(){
+  echo "-----------------------------------------------"
+  echo "Le fichier $fichier est envoyé ..."
+  mail -s "Question 6 - Boucles - $fichier" $adresse_mail < $fichier
+  echo "-----------------------------------------------"
+}
+
+#On recupere dans une liste les noms de fichier
+liste=$(ls -l | grep -v '^total' | cut -d: -f2 | cut -c4-)
+
+#On check pour chacun des fichiers du dossier via un case
+for fichier in $liste; do
+  saisie_choix
+  case $choix in
+    1) imprimer;;
+    2) envoyer;;
+    *) rien;;
+  esac
+done

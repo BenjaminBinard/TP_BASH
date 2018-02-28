@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#Initialisation du programme
+echo "+------------------------------+"
+echo "|     Question 8 - Select      |"
+echo "+------------------------------+"
+
+select choix in qu2-utilisateurs qu4-Tableaux qu5-ExpressionsEtFonctions qu6-Boucles quitter
+do
+   case $choix in
+      qu2-utilisateurs)
+         ./qu2-utilisateurs
+      ;;
+      qu4-Tableaux)
+         ./qu4-Tableaux
+      ;;
+      qu5-ExpressionsEtFonctions)
+        ./qu5-ExpressionsEtFonctions
+      ;;
+      qu6-Boucles)
+        ./qu6-Boucles
+      ;;
+      quitter)
+        echo "Au revoir ..."
+        break
+      ;;
+      *) echo "Vous n'avez rien choisis.";;
+   esac
+done

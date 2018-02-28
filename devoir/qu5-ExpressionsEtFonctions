@@ -5,8 +5,10 @@ echo "+----------------------------------------------+"
 echo "|     Question 5 - Expressions et Fonctions    |"
 echo "+----------------------------------------------+"
 
+#Initialisation du regex
 regex="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"
 
+#fonction de verification de l'adresse ip
 verification_ip(){
   resultat=$(echo $ip | grep -E $regex | wc -l)
   if [[ $resultat -ne 0 ]]; then
@@ -18,14 +20,28 @@ verification_ip(){
   fi
 }
 
+#fonction de saisie uniquement
 saisie_ip(){
   echo -n "Veuillez saisir une adresse IPV4 > "
-  read 
+  read ip
 }
 
-ip="192.168.1.1"
+#On redemande autant de fois nécéssaire jusqu'a une saisie correcte
 condition="false"
-while [[ condition -ne "true" ]]; do
+while ! [[ $condition =~ "true" ]]; do
   saisie_ip
   verification_ip
 done
+
+#L'adresse saisie est pingée
+ping=$(ping -c 1 $ip)
+
+#On extrait le pourcentage de packet perdu -> 0%, ping OK
+resultat=$(echo $ping | grep -c "0% packet loss")
+
+#Finalement on compare le resultat -> 1, aucun packet perdu
+if [[ $resultat == 1 ]]; then
+  echo "La machine possédant l'adresse IP $ip est bien accessible."
+else
+  echo "La machine possédant l'adresse IP $ip n'est pas accessible."
+fi
