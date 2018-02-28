@@ -1,0 +1,70 @@
+#!/bin/bash
+
+echo -e "\t+------------------+"
+echo -e "\t|    Rangement     |"
+echo -e "\t+------------------+"
+
+echo "Que voulez vous faire ?"
+echo -e "\t 1) Déplacer les fichier zip"
+echo -e "\t 2) Déplacer les fichier pdf"
+echo -e "\t 3) Déplacer les images"
+
+read choix
+echo $choix
+
+nom_zip="rangement_zip"
+nom_pdf="rangement_pdf"
+nom_image="rangement_image"
+
+verif_existe(){
+	echo $temp_fichier
+	existe=$(ls | grep -c "$temp_fichier")
+	if [[ $existe -eq 0 ]]
+	then
+		echo "Création du fichier ..."
+		mkdir $temp_fichier
+	fi
+}
+
+fichier_zip(){
+	temp_fichier=$nom_zip
+	verif_existe
+	liste=$(ls -a | grep "zip")
+	#echo $liste
+	for objet in $liste
+	do
+		#echo "$objet"
+		mv $objet $nom_zip
+	done
+}
+
+fichier_pdf(){
+	temp_fichier=$nom_pdf
+	verif_existe
+	liste=$(ls -a | grep "pdf")
+	#echo $liste
+	for objet in $liste
+	do
+		#echo "$objet"
+		mv $objet $nom_pdf
+	done
+}
+
+fichier_image(){
+	temp_fichier=$nom_image
+	verif_existe
+	liste=$(ls | grep "png\|jpg")
+	#echo $liste
+	for objet in $liste
+	do
+		#echo "$objet"
+		mv $objet $nom_image
+	done
+}
+
+case $choix in
+	1) fichier_zip;;
+	2) fichier_pdf;;
+	3) fichier_image;;
+	*) recommencer;;
+esac
