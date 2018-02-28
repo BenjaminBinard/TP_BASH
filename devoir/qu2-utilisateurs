@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#Initialisation du programme
+echo "+----------------------------------+"
+echo "|     Question 2 - Utilisateurs    |"
+echo "+----------------------------------+"
+
+#Recuperation de la liste des utilisateurs
+liste=$(grep "/bin/bash" /etc/passwd | cut -d: -f1)
+
+#Affichage en colonne
+for user in $liste; do
+  echo "L'utilisatuer $user utilise bash comme shell par défaut."
+done

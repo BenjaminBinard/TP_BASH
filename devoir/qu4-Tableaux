@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#Initialisation du programme
+echo "+------------------------------+"
+echo "|     Question 4 - Tableaux    |"
+echo "+------------------------------+"
+
+#Recuperation du nombre d'itérations
+choix="null"
+#On verifie que c'est bien un entier
+while [[ $(echo $choix | grep -v [a-Z] | wc -l) -lt 1 ]]; do
+  echo "Combien vooulez vous d'arguments dans ce tableau ?"
+  read choix
+done
+
+#déclaration du tableau
+declare -a tableau
+
+#remplissage du tableau
+echo "Veuillez saisir les informations souhaitées ..."
+for (( i = 0; i < $choix; i++ )); do
+  echo -n "Argument N°$i > "
+  read argument
+  tableau[$i]=$argument
+done
+
+#Affichage à l'envers du tableau
+echo "Affichage inverse ..."
+for (( i = $i; i >= 0; i-- )); do
+  echo ${tableau[$i]}
+done

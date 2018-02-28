@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#Initialisation du programme
+echo "+----------------------------------------------+"
+echo "|     Question 5 - Expressions et Fonctions    |"
+echo "+----------------------------------------------+"
+
+regex="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"
+
+verification_ip(){
+  resultat=$(echo $ip | grep -E $regex | wc -l)
+  if [[ $resultat -ne 0 ]]; then
+    echo $ip
+    condition="true"
+  else
+    echo "L'adresse IP choisie est invalide"
+    condition="false"
+  fi
+}
+
+saisie_ip(){
+  echo -n "Veuillez saisir une adresse IPV4 > "
+  read 
+}
+
+ip="192.168.1.1"
+condition="false"
+while [[ condition -ne "true" ]]; do
+  saisie_ip
+  verification_ip
+done
